@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaStore.UI", "AdaStore.UI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaStore.Api", "AdaStore.Api\AdaStore.Api.csproj", "{2C9FC779-8654-45A8-9272-71B5513CE355}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaStore.Share", "AdaStore.Share\AdaStore.Share.csproj", "{42CB651D-3169-44EF-9058-EEC0366AE72A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaStore.Shared", "AdaStore.Shared\AdaStore.Shared.csproj", "{315DB6AD-3D0C-4658-8C05-315F75AA21A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{2C9FC779-8654-45A8-9272-71B5513CE355}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C9FC779-8654-45A8-9272-71B5513CE355}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C9FC779-8654-45A8-9272-71B5513CE355}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42CB651D-3169-44EF-9058-EEC0366AE72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42CB651D-3169-44EF-9058-EEC0366AE72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42CB651D-3169-44EF-9058-EEC0366AE72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42CB651D-3169-44EF-9058-EEC0366AE72A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{315DB6AD-3D0C-4658-8C05-315F75AA21A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{315DB6AD-3D0C-4658-8C05-315F75AA21A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{315DB6AD-3D0C-4658-8C05-315F75AA21A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{315DB6AD-3D0C-4658-8C05-315F75AA21A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

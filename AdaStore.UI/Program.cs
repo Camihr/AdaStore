@@ -1,8 +1,14 @@
 using AdaStore.UI.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("es-CO");
+CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("es-CO");
+
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
