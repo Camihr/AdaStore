@@ -53,7 +53,7 @@ namespace AdaStore.UI.Shared
             }
             else
             {
-                Navigation.NavigateTo("/login");
+                Navigation.NavigateTo("/register");
             }
         }
 

@@ -23,7 +23,7 @@ namespace AdaStore.UI.Repositories
             this.signInManager = signInManager;
         }
 
-        public async Task<RegisterResponse> CreateUser(User userRequest)
+        public async Task<RegisterResponse> RegisterUser(User userRequest)
         {
             try
             {
@@ -33,7 +33,11 @@ namespace AdaStore.UI.Repositories
                     .FirstOrDefaultAsync(u=>u.UserName.ToUpper() == userRequest.Email.ToUpper());
 
                 if (existenUser != null)
+                {
+                    await userManager.AddToRoleAsync(existenUser, existenUser.Profile.ToString());
                     return new RegisterResponse { IsSuccess = false, Error = "Ya existe un usuario registrado con el mismo correo electrónico" };
+                }
+
 
                 var user = new User()
                 {

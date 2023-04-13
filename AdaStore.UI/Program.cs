@@ -5,8 +5,13 @@ using AdaStore.UI.Interfaces;
 using AdaStore.UI.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("es-CO");
+CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("es-CO");
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(opt =>
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -33,10 +38,10 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddScoped<IHttpClientService, HttpClientService> ();
-builder.Services.AddScoped<IOrdersRepository, OrdersRepository> ();
-builder.Services.AddScoped<IProductsRepository, ProductsRepository> ();
-builder.Services.AddScoped<IUsersRepository, UsersRepository> ();
+builder.Services.AddScoped<IHttpClientService, HttpClientService>();
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 var app = builder.Build();
 
@@ -55,12 +60,36 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 var scope = app.Services.CreateScope();
+
 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
 if (!await roleManager.RoleExistsAsync(Conts.Admin))
     await roleManager.CreateAsync(new IdentityRole<int>(Conts.Admin));
 
 if (!await roleManager.RoleExistsAsync(Conts.Buyer))
     await roleManager.CreateAsync(new IdentityRole<int>(Conts.Buyer));
+
+//if (await userManager.FindByEmailAsync("admin@adastore.co") == null)
+//{
+//    var user = new User
+//    {
+//        UserName = "admin@adastore.co",
+//        Email = "admin@adastore.co",
+//        Name = "Admin"
+//    };
+
+//    var result = await userManager.CreateAsync(user, "1234567");
+
+//    try
+//    {
+//        if (result.Succeeded)
+//            await userManager.AddToRoleAsync(user, Conts.Admin);
+//    }
+//    catch (Exception ex)
+//    {
+//        throw;
+//    }
+//}
 
 app.Run();
