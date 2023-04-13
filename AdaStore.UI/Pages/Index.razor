@@ -2,32 +2,5 @@
 @using AdaStore.Shared.Models;
 @using AdaStore.UI.Interfaces;
 @inject IProductsRepository productsRepository
-
 <PageTitle>Index</PageTitle>
 
-
-@if (_products != null)
-{
-    foreach (var item in _products)
-    {
-        <p>@item.Name</p>
-    }
-}
-
-@code{
-    private List<Product> _products;
-
-    protected override async Task OnInitializedAsync()
-    {
-        //var response = await productsRepository.GetProducts();
-
-        //if (response.Error)
-        //{
-
-        //}
-        //else
-        //{
-        //    _products = response.Response;
-        //}
-    }
-}

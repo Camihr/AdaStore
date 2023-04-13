@@ -5,6 +5,6 @@ namespace AdaStore.UI.Interfaces
 {
     public interface IProductsRepository
     {
-        Task<HttpResponse<List<Product>>> GetProducts();
+        //Task<HttpResponseBase<List<Product>>> GetProducts();
     }
 }

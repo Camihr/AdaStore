@@ -5,6 +5,6 @@ namespace AdaStore.UI.Interfaces
 {
     public interface IUsersRepository
     {
-        Task<RegisterResponse> RegisterUser(User userRequest);
+        Task<HttpResponseBase<object>> RegisterUser(User userRequest);
     }
 }

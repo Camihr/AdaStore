@@ -1,11 +1,11 @@
 using AdaStore.Shared.Conts;
 using AdaStore.Shared.Data;
+using AdaStore.Shared.Enums;
 using AdaStore.Shared.Models;
 using AdaStore.UI.Interfaces;
 using AdaStore.UI.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -70,26 +70,20 @@ if (!await roleManager.RoleExistsAsync(Conts.Admin))
 if (!await roleManager.RoleExistsAsync(Conts.Buyer))
     await roleManager.CreateAsync(new IdentityRole<int>(Conts.Buyer));
 
-//if (await userManager.FindByEmailAsync("admin@adastore.co") == null)
-//{
-//    var user = new User
-//    {
-//        UserName = "admin@adastore.co",
-//        Email = "admin@adastore.co",
-//        Name = "Admin"
-//    };
+if (await userManager.FindByEmailAsync("admin@adastore.co") == null)
+{
+    var user = new User
+    {
+        UserName = "admin@adastore.co",
+        Email = "admin@adastore.co",
+        Name = "Admin",
+        Profile = Profiles.Admin,
+    };
 
-//    var result = await userManager.CreateAsync(user, "1234567");
+    var result = await userManager.CreateAsync(user, "1234567");
 
-//    try
-//    {
-//        if (result.Succeeded)
-//            await userManager.AddToRoleAsync(user, Conts.Admin);
-//    }
-//    catch (Exception ex)
-//    {
-//        throw;
-//    }
-//}
+    if (result.Succeeded)
+        await userManager.AddToRoleAsync(user, Conts.Admin);
+}
 
 app.Run();

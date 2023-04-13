@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text;
 using AdaStore.UI.Interfaces;
-using Microsoft.AspNetCore.Http;
 
 namespace AdaStore.UI.Repositories
 {

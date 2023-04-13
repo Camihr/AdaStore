@@ -4,8 +4,6 @@ using AdaStore.UI.Interfaces;
 using AdaStore.UI.Shared;
 using AdaStore.UI.UI;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Primitives;
 
 namespace AdaStore.UI.Pages
 {
@@ -19,6 +17,9 @@ namespace AdaStore.UI.Pages
 
         private async Task RegisterUser()
         {
+            //Navigation.NavigateTo("/login");
+            //return;
+
             Layout.ToogleLoader(true);
 
             user.Profile = Profiles.Buyer;
@@ -27,12 +28,12 @@ namespace AdaStore.UI.Pages
 
             if (response.IsSuccess)
             {
-                Layout.ShowAlert(new AlertInfo() { IsError = false, Message = $"Te registraste de manera exitosa" });
+                //Layout.ShowAlert(new AlertInfo() { IsError = false, Message = $"Te registraste de manera exitosa" });
                 Navigation.NavigateTo("/login");
             }
             else
             {
-                Layout.ShowAlert(new AlertInfo() { IsError = true, Message = response.Error });
+                Layout.ShowAlert(new AlertInfo() { IsError = true, Message = await response.GetErrorMessage() });
             }
 
             Layout.ToogleLoader(false);

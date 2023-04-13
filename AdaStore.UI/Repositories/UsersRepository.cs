@@ -1,6 +1,7 @@
 ﻿using AdaStore.Shared.Data;
 using AdaStore.Shared.Models;
 using AdaStore.UI.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,8 +12,13 @@ namespace AdaStore.UI.Repositories
         private readonly IDbContextFactory<ApplicationDbContext> dbFactory;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IHttpClientService httpClientService;
+        
+        private string _apiUrl;
 
         public UsersRepository(
+            IConfiguration configuration, 
+            IHttpClientService httpClientService,
             IDbContextFactory<ApplicationDbContext> dbFactory,
             Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider authenticationStateProvider,
             UserManager<User> userManager,
@@ -21,56 +27,27 @@ namespace AdaStore.UI.Repositories
             this.dbFactory = dbFactory;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.httpClientService = httpClientService;
+
+            _apiUrl = configuration.GetValue<string>("ApiUrl");
         }
 
-        public async Task<RegisterResponse> RegisterUser(User userRequest)
+        public async Task<HttpResponseBase<object>> RegisterUser(User user)
         {
             try
             {
-                using var context = dbFactory.CreateDbContext();
+                var url = $"{_apiUrl}Account/Register";
+                var httpResponse = await httpClientService.Post(url, user);
 
-                var existenUser = await context.Users
-                    .FirstOrDefaultAsync(u=>u.UserName.ToUpper() == userRequest.Email.ToUpper());
-
-                if (existenUser != null)
+                return new HttpResponseBase<object>()
                 {
-                    await userManager.AddToRoleAsync(existenUser, existenUser.Profile.ToString());
-                    return new RegisterResponse { IsSuccess = false, Error = "Ya existe un usuario registrado con el mismo correo electrónico" };
-                }
-
-
-                var user = new User()
-                {
-                    Name = userRequest.Name,
-                    Address = userRequest.Address,
-                    Phone = userRequest.Phone,
-                    Email = userRequest.Email,
-                    UserName = userRequest.Email,
-                    Document = userRequest.Document,
-                    Profile = userRequest.Profile,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
+                    IsSuccess = httpResponse.IsSuccessStatusCode,
+                    Response = httpResponse
                 };
-
-                var result = await userManager.CreateAsync(user, userRequest.Password);
-
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, user.Profile.ToString());
-
-                    return new RegisterResponse()
-                    {
-                        IsSuccess = true
-                    };
-                }
-                else
-                {
-                    return new RegisterResponse { IsSuccess = false, Error = "Ocurrió un error inesperado" };
-                }
             }
             catch (Exception)
             {
-                return new RegisterResponse { IsSuccess = false, Error = "Ocurrió un error inesperado" };
+                return new HttpResponseBase<object>() { IsSuccess = false};
             }
         }
     }
