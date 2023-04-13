@@ -1,4 +1,4 @@
-﻿using AdaStore.Shared.Model;
+﻿using AdaStore.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,30 +14,14 @@ namespace AdaStore.Shared.Data
         {
             base.OnModelCreating(builder);
 
-            // Relation between updates provider supplies and budgets
-
-            //builder.Entity<ProviderUpdatesToBudget>().HasKey(g => new { g.ProviderId, g.BudgetId });
-
-            //builder.Entity<ProviderUpdatesToBudget>()
-            //    .HasOne(g => g.Budget)
-            //    .WithMany(g => g.ProviderUpdatesToBudgets)
-            //    .HasForeignKey(g => g.BudgetId);
-
-            //builder.Entity<ProviderUpdatesToBudget>()
-            //    .HasOne(g => g.Provider)
-            //    .WithMany(g => g.ProviderUpdatesToBudgets)
-            //    .HasForeignKey(g => g.ProviderId);
-
-            // Relation between products and orders
-
-           
-
-            // Query filters
-
-           // builder.Entity<Provider>().HasQueryFilter(p => !p.IsDeleted);
-       
+            builder.Entity<User>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Product>().HasQueryFilter(p => !p.IsDeleted);
+            builder.Entity<Order>().HasQueryFilter(p => !p.IsDeleted);
         }
 
-        ///public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }

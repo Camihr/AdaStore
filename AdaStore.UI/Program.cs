@@ -1,37 +1,66 @@
-using AdaStore.UI.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using System.Globalization;
+using AdaStore.Shared.Conts;
+using AdaStore.Shared.Data;
+using AdaStore.Shared.Models;
+using AdaStore.UI.Interfaces;
+using AdaStore.UI.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("es-CO");
-CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("es-CO");
+builder.Services.AddDbContextFactory<ApplicationDbContext>(opt =>
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddTransient(p => p.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
 
+builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
+builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredUniqueChars = 1;
+    options.SignIn.RequireConfirmedEmail = false;
+})
+.AddDefaultTokenProviders()
+.AddDefaultUI()
+.AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddScoped<IHttpClientService, HttpClientService> ();
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository> ();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository> ();
+builder.Services.AddScoped<IUsersRepository, UsersRepository> ();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+var scope = app.Services.CreateScope();
+var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+
+if (!await roleManager.RoleExistsAsync(Conts.Admin))
+    await roleManager.CreateAsync(new IdentityRole<int>(Conts.Admin));
+
+if (!await roleManager.RoleExistsAsync(Conts.Buyer))
+    await roleManager.CreateAsync(new IdentityRole<int>(Conts.Buyer));
 
 app.Run();

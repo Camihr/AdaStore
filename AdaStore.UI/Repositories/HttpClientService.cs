@@ -1,0 +1,128 @@
+﻿using System.Text.Json;
+using System.Text;
+using AdaStore.UI.Interfaces;
+
+namespace AdaStore.UI.Repositories
+{
+    public class HttpClientService : IHttpClientService
+    {
+        private string _apiToken;
+
+        private JsonSerializerOptions jsonDefaulOptions =>
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+
+        public HttpClientService(IConfiguration configuration)
+        {
+            _apiToken = configuration.GetValue<string>("ApiToken");
+        }
+
+        public async Task<HttpResponse<object>> Post<T>(string url, T body)
+        {
+            using (var client = new HttpClient())
+            {
+                AddBasicAuthHeader(client);
+                var sendJson = JsonSerializer.Serialize(body);
+                var sendContent = new StringContent(sendJson, Encoding.UTF8, "application/json");
+                var httpResponse = await client.PostAsync(url, sendContent);
+
+                return new HttpResponse<object>(!httpResponse.IsSuccessStatusCode, null, httpResponse);
+            }
+        }
+
+        public async Task<HttpResponse<TResponse>> Post<T, TResponse>(string url, T enviar)
+        {
+            using (var client = new HttpClient())
+            {
+                AddBasicAuthHeader(client);
+                var enviarJSON = JsonSerializer.Serialize(enviar);
+                var enviarContent = new StringContent(enviarJSON, Encoding.UTF8, "application/json");
+                var responseHttp = await client.PostAsync(url, enviarContent);
+
+                if (responseHttp.IsSuccessStatusCode)
+                {
+                    var response = await DeserializeResponse<TResponse>(responseHttp, jsonDefaulOptions);
+                    return new HttpResponse<TResponse>(false, response, responseHttp);
+                }
+                else
+                {
+                    return new HttpResponse<TResponse>(true, default, responseHttp);
+                }
+            }
+        }
+
+        public async Task<HttpResponseMessage> Post2<T, TResponse>(string url, T enviar)
+        {
+            using (var client = new HttpClient())
+            {
+                AddBasicAuthHeader(client);
+                var enviarJSON = JsonSerializer.Serialize(enviar);
+                var enviarContent = new StringContent(enviarJSON, Encoding.UTF8, "application/json");
+                var responseHttp = await client.PostAsync(url, enviarContent);
+
+                return responseHttp;
+            }
+        }
+
+        public async Task<HttpResponse<object>> Put<T>(string url, T body)
+        {
+            using (var client = new HttpClient())
+            {
+                AddBasicAuthHeader(client);
+                var sendJson = JsonSerializer.Serialize(body);
+                var sendContent = new StringContent(sendJson, Encoding.UTF8, "application/json");
+                var httpResponse = await client.PutAsync(url, sendContent);
+
+                return new HttpResponse<object>(!httpResponse.IsSuccessStatusCode, null, httpResponse);
+            }
+        }
+
+        public async Task<HttpResponse<T>> Get<T>(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                AddBasicAuthHeader(client);
+                var httpResponse = await client.GetAsync(url);
+
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var response = await DeserializeResponse<T>(httpResponse, jsonDefaulOptions);
+                    return new HttpResponse<T>(false, response, httpResponse);
+                }
+                else
+                {
+                    return new HttpResponse<T>(true, default, httpResponse);
+                }
+            }
+        }
+
+        public async Task<HttpResponse<object>> Delete(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                AddBasicAuthHeader(client);
+                var httpResponse = await client.DeleteAsync(url);
+
+                return new HttpResponse<object>(!httpResponse.IsSuccessStatusCode, null, httpResponse);
+            }
+        }
+
+        private async Task<T> DeserializeResponse<T>(HttpResponseMessage httpResponse, JsonSerializerOptions jsonSerializerOptions)
+        {
+            var responseString = await httpResponse.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(responseString, jsonSerializerOptions);
+        }
+
+        private void AddBasicAuthHeader(HttpClient client)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes($"{_apiToken}:ADMIN");
+            string base64 = Convert.ToBase64String(bytes);
+
+            var headers = new Dictionary<string, string>()
+            {
+              { "Authorization", $"Basic {base64}"}
+            };
+
+            client.DefaultRequestHeaders.Add(headers.FirstOrDefault().Key, headers.FirstOrDefault().Value);
+        }
+    }
+}
