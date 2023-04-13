@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaStore.UI", "AdaStore.UI\AdaStore.UI.csproj", "{3E9814D6-BAAF-47D4-82F9-068CDC9AE2D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaStore.UI", "AdaStore.UI\AdaStore.UI.csproj", "{3E9814D6-BAAF-47D4-82F9-068CDC9AE2D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaStore.Api", "AdaStore.Api\AdaStore.Api.csproj", "{2C9FC779-8654-45A8-9272-71B5513CE355}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaStore.Api", "AdaStore.Api\AdaStore.Api.csproj", "{2C9FC779-8654-45A8-9272-71B5513CE355}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaStore.Shared", "AdaStore.Shared\AdaStore.Shared.csproj", "{315DB6AD-3D0C-4658-8C05-315F75AA21A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaStore.Shared", "AdaStore.Shared\AdaStore.Shared.csproj", "{315DB6AD-3D0C-4658-8C05-315F75AA21A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

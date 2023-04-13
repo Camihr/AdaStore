@@ -1,0 +1,33 @@
+﻿namespace AdaStore.UI.UI
+{
+    public enum Icons
+    {
+        IconUser,
+        IconMenu,
+        IconSearch,
+        IconDelete,
+        IconEdit,
+        IconAdd,
+        IconBudgets,
+        IconActivities,
+        IconAPUs,
+        IconSuppliesCreator,
+        IconSuppliesProviders,
+        IconGroupsSupplies,
+        IconLabors,
+        IconUsers,
+        IconProviders,
+        IconChangePassword,
+        IconLogout,
+        IconConfirm,
+        IconAdvertence,
+        ArrowUp,
+        ArrowDown,
+        ArrowRight,
+        CostUpdate,
+        Excel,
+        Notification,
+        Loader,
+        Cancel,
+    }
+}

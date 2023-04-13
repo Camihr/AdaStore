@@ -2,5 +2,8 @@
 {
     public enum Profiles
     {
+        None,
+        Admin,
+        Buyer
     }
 }

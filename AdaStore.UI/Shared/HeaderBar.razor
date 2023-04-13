@@ -1,0 +1,13 @@
+﻿<header>
+    <div id="title">
+        <NavLink id="logo" class='@(_isMenuClosed ? "logo-min": string.Empty)' href="/"></NavLink>
+        <a @onclick="ToogleSideBar">
+            <Icon Name="Icons.IconMenu" />
+        </a>
+        <h1 id="page-title">@Title</h1>
+    </div>
+    <div id="header-options">
+        <LoginDisplay />
+    </div>
+</header>
+ 
