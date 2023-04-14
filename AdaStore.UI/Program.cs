@@ -77,6 +77,10 @@ if (await userManager.FindByEmailAsync("admin@adastore.co") == null)
         UserName = "admin@adastore.co",
         Email = "admin@adastore.co",
         Name = "Admin",
+        Address = string.Empty,
+        PhoneNumber = string.Empty,
+        Document = string.Empty,
+
         Profile = Profiles.Admin,
     };
 

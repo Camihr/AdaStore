@@ -33,34 +33,42 @@ namespace AdaStore.Api.Controllers
             product.Stock -= item.Quantity;
             product.UpdatedAt = DateTime.UtcNow;
 
-            if (order == null)
+            try
             {
-                order = new Order()
+                if (order == null)
                 {
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
-                    UserId = userId,
-                    CartItems = new List<CartItem> { item }
-                };
+                    order = new Order()
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
+                        UserId = userId,
+                        CartItems = new List<CartItem> { item }
+                    };
 
-                context.Orders.Add(order);
-            }
-            else
-            {
-                var existingCartItem = order.CartItems.FirstOrDefault(c => c.ProductId == item.ProductId);
-
-                if (existingCartItem == null)
-                {
-                    item.OrderId = order.Id;
-                    context.CartItems.Add(item);
+                    context.Orders.Add(order);
                 }
                 else
                 {
-                    existingCartItem.Quantity += item.Quantity;
-                }
-            }
+                    var existingCartItem = order.CartItems.FirstOrDefault(c => c.ProductId == item.ProductId);
 
-            await context.SaveChangesAsync();
+                    if (existingCartItem == null)
+                    {
+                        item.OrderId = order.Id;
+                        context.CartItems.Add(item);
+                    }
+                    else
+                    {
+                        existingCartItem.Quantity += item.Quantity;
+                    }
+                }
+
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
             return Ok();
         }
 
