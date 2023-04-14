@@ -1,4 +1,6 @@
+using AdaStore.Shared.Conts;
 using AdaStore.Shared.Data;
+using AdaStore.Shared.Enums;
 using AdaStore.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -44,5 +46,32 @@ app.UseCors(x => x
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+var scope = app.Services.CreateScope();
+
+var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+if (!await roleManager.RoleExistsAsync(Conts.Admin))
+    await roleManager.CreateAsync(new IdentityRole<int>(Conts.Admin));
+
+if (!await roleManager.RoleExistsAsync(Conts.Buyer))
+    await roleManager.CreateAsync(new IdentityRole<int>(Conts.Buyer));
+
+if (await userManager.FindByEmailAsync("admin@adastore.co") == null)
+{
+    var user = new User
+    {
+        UserName = "admin@adastore.co",
+        Email = "admin@adastore.co",
+        Name = "Admin",
+        Profile = Profiles.Admin,
+    };
+
+    var result = await userManager.CreateAsync(user, "1234567");
+
+    if (result.Succeeded)
+        await userManager.AddToRoleAsync(user, Conts.Admin);
+}
 
 app.Run();

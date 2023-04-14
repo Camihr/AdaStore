@@ -2,7 +2,9 @@
 using AdaStore.Shared.Enums;
 using AdaStore.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace AdaStore.Api.Controllers
 {
@@ -11,10 +13,12 @@ namespace AdaStore.Api.Controllers
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext context;
+        private readonly IConfiguration configuration;
 
-        public OrderController(ApplicationDbContext context)
+        public OrderController(ApplicationDbContext context, IConfiguration configuration)
         {
             this.context = context;
+            this.configuration = configuration;
         }
 
         [HttpPost]
@@ -154,23 +158,29 @@ namespace AdaStore.Api.Controllers
 
         [HttpGet]
         [Route("Buy")]
-        public async Task<IActionResult> BuyOrder([FromQuery] int orderId)
+        public async Task<IActionResult> Buy([FromQuery] int orderId)
         {
-            var order = await context.Orders
-               .Include(o => o.CartItems)
-               .ThenInclude(o => o.Product)
-               .FirstOrDefaultAsync(o => o.Id == orderId);
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            if (order == null)
-                return BadRequest("La orden solicitada no existe");
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
 
-            order.Status = OrderStatuses.Completed;
-            order.UpdatedAt = DateTime.UtcNow;
+                using (SqlCommand command = new SqlCommand("CompletOrder", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
 
-            foreach (var item in order.CartItems)
-                item.UnitPrice = item.Product.Price;
+                    SqlParameter orderIdParameter = new SqlParameter("@OrderId", SqlDbType.Int);
+                    orderIdParameter.Value = orderId;
+                    command.Parameters.Add(orderIdParameter);
 
-            await context.SaveChangesAsync();
+                    SqlParameter newDateParameter = new SqlParameter("@NewDate", SqlDbType.DateTime);
+                    newDateParameter.Value = DateTime.UtcNow;
+                    command.Parameters.Add(newDateParameter);
+
+                    command.ExecuteNonQuery();
+                }
+            }
 
             return Ok();
         }

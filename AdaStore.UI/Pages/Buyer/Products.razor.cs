@@ -61,6 +61,7 @@ namespace AdaStore.UI.Pages.Buyer
             {
                 ProductId = _selectedProduct.Id,
                 Quantity = quantity,
+                UnitPrice = _selectedProduct.Price
             };
 
             var response = await OrdersRepository.AddToCart(cartItem, Layout.CurrentUser.Id);
