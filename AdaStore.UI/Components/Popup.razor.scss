@@ -30,6 +30,13 @@
         h3 {
             color: #fff;
         }
+
+        ::deep svg {
+            width: 14px;
+            height: 14px;
+            fill: white;
+            cursor: pointer;
+        }
     }
 
     .popup-body {

@@ -1,6 +1,7 @@
-﻿<header>
+﻿@using AdaStore.Shared.Conts;
+<header>
     <div id="title">
-        <NavLink id="logo" class='@(_isMenuClosed ? "logo-min": string.Empty)' href="/"></NavLink>
+        <a id="logo" class='@(_isMenuClosed ? "logo-min": string.Empty)'></a>
         <a @onclick="ToogleSideBar">
             <Icon Name="Icons.IconMenu" />
         </a>
@@ -8,6 +9,9 @@
     </div>
     <div id="header-options">
         <LoginDisplay />
+      <AuthorizeView Roles="@Conts.Buyer">
+            <CartIndicator QuantityItems="QuantityItems" />
+      </AuthorizeView>
     </div>
 </header>
  

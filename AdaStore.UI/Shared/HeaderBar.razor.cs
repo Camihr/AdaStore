@@ -6,7 +6,8 @@ namespace AdaStore.UI.Shared
     {
         [CascadingParameter] MainLayout Layout { get; set; }
         [Parameter] public string Title { get; set; }
-      
+        [Parameter] public int QuantityItems { get; set; }
+
         private bool _isMenuClosed;
 
         private void ToogleSideBar()

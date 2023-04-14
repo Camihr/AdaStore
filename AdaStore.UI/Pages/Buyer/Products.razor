@@ -1,11 +1,9 @@
 ﻿@page "/products"
-@using AdaStore.UI.Helpers;
-
 
 @if (_products != null)
 {
     <div class="top-options">
-        <Searcher PlaceHolder="Busca por cliente o proyecto" OnSubmit="Search" />
+        <Searcher PlaceHolder="Busca por nombre" OnSubmit="Search" />
         <Button Title="@TextOrderButton" Style="Buttons.Secondary" Click="Order" />
     </div>
 
@@ -15,15 +13,22 @@
             @foreach (var pro in _products)
             {
                 <div class="product">
-                    <dvi class="image-product"></dvi>
+                    <dvi class="image-product" style="background-image: url(@pro.ImageUrl);"></dvi>
                     <dvi class="body-product">
                         <div class="info-basic-product">
                             <h3>@pro.Name</h3>
                             <p>@pro.Price.MoneyFormat()</p>
                         </div>
                         <div class="actions-produc">
-                            <button class="more-button">Ver más</button>
-                            <button class="add-cart-circle"><Icon Name="Icons.AddCart" /></button>
+                            <button class="more-button" @onclick="()=> SelecteProduct(pro, true)">Ver más</button>
+                            @if (pro.Stock > 0)
+                            {
+                                <button @onclick="()=> SelecteProduct(pro, false)" class="add-cart-circle"><Icon Name="Icons.AddCart" /></button>
+                            }
+                            else
+                            {
+                                <span class="exhausted">Agotado</span>
+                            }
                         </div>
                     </dvi>
                 </div>
@@ -36,4 +41,11 @@
             <p>@_emptyMessage</p>
         </div>
     }
+}
+
+@if (_isDetailVisible)
+{
+    <Popup ClosePopup="()=> _isDetailVisible = false" Title="Detalle de Producto" MaxWidth="700">
+        <ProductDetail Product="_selectedProduct" AddToCart="AddToCart" />
+    </Popup>
 }

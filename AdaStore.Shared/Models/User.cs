@@ -33,6 +33,8 @@ namespace AdaStore.Shared.Models
         public bool IsDeleted { get; set; }
 
         [NotMapped]
+        [Required(ErrorMessage = "Campo obligatorio")]
+        [MinLength(6, ErrorMessage = "6 caracteres máximo")]
         public string Password { get; set; }
     }
 }

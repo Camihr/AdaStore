@@ -1,40 +1,45 @@
-﻿<nav id="nav" class='@(IsMenuClosed ? "nav-min" : string.Empty)'>
+﻿@using AdaStore.Shared.Conts;
+<nav id="nav" class='@(IsMenuClosed ? "nav-min" : string.Empty)'>
     <ul>
-        <li>
-            <NavLink href="/admin/transactions">
-                <Icon Name="Icons.Transactions" />
-                <span>
-                    Transacciones
-                </span>
-            </NavLink>
-        </li>
-        <li>
-            <NavLink href="/admin/products">
-                <Icon Name="Icons.Products" />
-                <span>
-                    Productos
-                </span>
-            </NavLink>
-        </li>
-        <li>
-            <NavLink href="/admin/products">
-                <Icon Name="Icons.IconUsers" />
-                <span>
-                    Usuarios
-                </span>
-            </NavLink>
-        </li>
-        <li>
-            <NavLink href="/products">
-                <Icon Name="Icons.Products" />
-                <span>
-                    Productos
-                </span>
-            </NavLink>
-        </li>
+        <AuthorizeView Roles="@Conts.Admin">
+            <li>
+                <NavLink href="/admin/transactions">
+                    <Icon Name="Icons.Transactions" />
+                    <span>
+                        Transacciones
+                    </span>
+                </NavLink>
+            </li>
+            <li>
+                <NavLink href="/admin/products">
+                    <Icon Name="Icons.Products" />
+                    <span>
+                        Productos
+                    </span>
+                </NavLink>
+            </li>
+            <li>
+                <NavLink href="/admin/users">
+                    <Icon Name="Icons.IconUsers" />
+                    <span>
+                        Usuarios
+                    </span>
+                </NavLink>
+            </li>
+        </AuthorizeView>
+        <AuthorizeView Roles="@Conts.Buyer">
+            <li>
+                <NavLink href="/products">
+                    <Icon Name="Icons.Products" />
+                    <span>
+                        Productos
+                    </span>
+                </NavLink>
+            </li>
+        </AuthorizeView>
     </ul>
 </nav>
 
-@code{
+@code {
     [Parameter] public bool IsMenuClosed { get; set; }
 }

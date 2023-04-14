@@ -4,7 +4,7 @@
     {
         public string PropName { get; set; }
         public string DisplayName { get; set; }
-        public string OptionalClasses { get; set; }
+        public string OptionalStyles { get; set; }
         public bool IsSelected { get; set; }
         public bool IsDesc { get; set; }
         public bool NotOrder { get; set; }
@@ -14,7 +14,7 @@
             {
                 if (NotOrder)
                 {
-                    return OptionalClasses;
+                    return OptionalStyles;
                 }
                 else
                 {

@@ -32,7 +32,7 @@ namespace AdaStore.UI.Pages.Admin
                 new TableColumn(){DisplayName = "Bolsas", NotOrder = true},
                 new TableColumn(){PropName = "CreateAt", DisplayName = "Iniciada", IsSelected = true, IsDesc = true},
                 new TableColumn(){PropName = "Status", DisplayName = "Estado"},
-                new TableColumn(){DisplayName = "Detalle", OptionalClasses ="th-center", NotOrder = true},
+                new TableColumn(){DisplayName = "Detalle", OptionalStyles ="th-center", NotOrder = true},
             };
         }
 

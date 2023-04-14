@@ -21,5 +21,7 @@ namespace AdaStore.Shared.Models
         [Required(ErrorMessage = "Campo obligatorio")]
         [Range(0, int.MaxValue, ErrorMessage = "La cantidad mínima es 0")]
         public double Price { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

@@ -15,5 +15,8 @@ namespace AdaStore.Shared.Models
         [ForeignKey ("Order")]
         public int OrderId { get; set; }
         public Order Order { get; set; }
+
+        [NotMapped]
+        public double Total { get; set; }
     }
 }

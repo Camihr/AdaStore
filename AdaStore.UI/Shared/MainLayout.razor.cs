@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Security.Claims;
 using AdaStore.Shared.Enums;
+using Microsoft.AspNetCore.Routing;
 
 namespace AdaStore.UI.Shared
 {
@@ -17,6 +18,7 @@ namespace AdaStore.UI.Shared
         private string _title;
         private bool _showLoading;
         private bool _showAlert;
+        private int _quantityItems;
         private AlertInfo _alertInfo;
 
         protected async override Task OnInitializedAsync()
@@ -45,10 +47,21 @@ namespace AdaStore.UI.Shared
                 var uri = Navigation.Uri;
                 var absoluteUri = Navigation.ToAbsoluteUri(uri);
 
-                if (absoluteUri.AbsolutePath == "/")
+                var buyerRoutes = new List<string>() { "/register", "/products", "/cart" };
+                var adminRoutes = new List<string>() { "/register", "/admin/products", "/admin/transactions", "/admin/users" };
+
+                switch (CurrentUser.Profile)
                 {
-                    var route = CurrentUser.Profile == Profiles.Admin ? "/transactions" : "/products";
-                    Navigation.NavigateTo(route);
+                    case Profiles.Admin:
+                        if (!adminRoutes.Any(r => r == absoluteUri.AbsolutePath))
+                            Navigation.NavigateTo("/admin/transactions");
+                        break;
+                    case Profiles.Buyer:
+                        if (!buyerRoutes.Any(r => r == absoluteUri.AbsolutePath))
+                            Navigation.NavigateTo("/products");
+                        break;
+                    default:
+                        break;
                 }
             }
             else
@@ -84,6 +97,27 @@ namespace AdaStore.UI.Shared
             };
 
             _showAlert = true;
+            StateHasChanged();
+        }
+
+        public void SetQuantityItems(int quantity, QuantityOperations operation)
+        {
+
+            switch (operation)
+            {
+                case QuantityOperations.Set:
+                    _quantityItems = quantity;
+                    break;
+                case QuantityOperations.Add:
+                    _quantityItems += quantity;
+                    break;
+                case QuantityOperations.Subtract:
+                    _quantityItems -= quantity;
+                    break;
+                default:
+                    break;
+            }
+
             StateHasChanged();
         }
     }

@@ -1,0 +1,8 @@
+﻿@import '../../wwwroot/css/_vars.scss';
+
+#user-detail {
+    @include flex-column-start;
+
+    .user-info {
+    }
+}

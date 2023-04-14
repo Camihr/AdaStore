@@ -1,7 +1,6 @@
 ﻿using AdaStore.Shared.Data;
 using AdaStore.Shared.Models;
 using AdaStore.UI.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

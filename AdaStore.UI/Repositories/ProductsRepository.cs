@@ -31,25 +31,23 @@ namespace AdaStore.UI.Repositories
                 {
                     var response = await DeserializeResponse<List<Product>>(httpResponse, jsonDefaulOptions);
 
-                    return new HttpResponseBase<List<Product>> ()
+                    return new HttpResponseBase<List<Product>>()
                     {
                         IsSuccess = httpResponse.IsSuccessStatusCode,
                         Response = httpResponse,
                         Data = response
                     };
                 }
-                else
+
+                return new HttpResponseBase<List<Product>>()
                 {
-                    return new HttpResponseBase<List<Product>>()
-                    {
-                        IsSuccess = httpResponse.IsSuccessStatusCode,
-                        Response = httpResponse,
-                    };
-                }
+                    IsSuccess = httpResponse.IsSuccessStatusCode,
+                    Response = httpResponse,
+                };
             }
             catch (Exception)
             {
-               return new HttpResponseBase<List<Product>>() { IsSuccess = false};
+                return new HttpResponseBase<List<Product>>() { IsSuccess = false };
             }
         }
 

@@ -9,18 +9,12 @@ namespace AdaStore.Api.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private readonly RoleManager<IdentityRole<int>> roleManager;
         private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
 
         public AccountController(
-            RoleManager<IdentityRole<int>> roleManager,
-            UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            UserManager<User> userManager)
         {
             this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.roleManager = roleManager;
         }
 
         [HttpPost]
