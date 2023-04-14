@@ -15,7 +15,6 @@ namespace AdaStore.UI.Pages.Buyer
         [CascadingParameter] public MainLayout Layout { get; set; }
 
         private Order _order;
-        private double _total;
         private bool _isConfirmVisible;
         private bool _isBuying;
 
@@ -50,12 +49,12 @@ namespace AdaStore.UI.Pages.Buyer
 
         private void CalculateTotal()
         {
-            _total = 0;
+            _order.Total = 0;
 
             foreach (var item in _order.CartItems)
             {
                 item.Total = item.Quantity * item.Product.Price;
-                _total += item.Total;
+                _order.Total += item.Total;
             }
 
             StateHasChanged();

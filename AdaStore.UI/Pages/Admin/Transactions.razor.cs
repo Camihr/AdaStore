@@ -73,7 +73,8 @@ namespace AdaStore.UI.Pages.Admin
             {
                 foreach (var item in order.CartItems)
                 {
-                    order.Total += item.UnitPrice * item.Quantity;
+                    item.Total = item.UnitPrice * item.Quantity;
+                    order.Total += item.Total;
                 }
             }
         }

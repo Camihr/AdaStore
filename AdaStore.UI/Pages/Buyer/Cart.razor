@@ -27,7 +27,7 @@
                 <Button Title="Comprar" Style="Buttons.Secondary"
                     Click="()=> {_isBuying = true; _isConfirmVisible = true;}" />
             </div>
-            <h2>@_total.MoneyFormat()</h2>
+            <h2>@_order.Total.MoneyFormat()</h2>
         </div>
     }
 </div>
