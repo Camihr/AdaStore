@@ -17,9 +17,6 @@ namespace AdaStore.UI.Pages
 
         private async Task RegisterUser()
         {
-            //Navigation.NavigateTo("/login");
-            //return;
-
             Layout.ToogleLoader(true);
 
             user.Profile = Profiles.Buyer;
@@ -28,8 +25,7 @@ namespace AdaStore.UI.Pages
 
             if (response.IsSuccess)
             {
-                //Layout.ShowAlert(new AlertInfo() { IsError = false, Message = $"Te registraste de manera exitosa" });
-                Navigation.NavigateTo("/login");
+                Navigation.NavigateTo("/login", true);
             }
             else
             {

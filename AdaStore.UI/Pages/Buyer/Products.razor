@@ -1,7 +1,39 @@
 ﻿@page "/products"
+@using AdaStore.UI.Helpers;
 
-<h3>Products</h3>
 
-@code {
+@if (_products != null)
+{
+    <div class="top-options">
+        <Searcher PlaceHolder="Busca por cliente o proyecto" OnSubmit="Search" />
+        <Button Title="@TextOrderButton" Style="Buttons.Secondary" Click="Order" />
+    </div>
 
+    @if (_products.Any())
+    {
+        <div id="grid-products">
+            @foreach (var pro in _products)
+            {
+                <div class="product">
+                    <dvi class="image-product"></dvi>
+                    <dvi class="body-product">
+                        <div class="info-basic-product">
+                            <h3>@pro.Name</h3>
+                            <p>@pro.Price.MoneyFormat()</p>
+                        </div>
+                        <div class="actions-produc">
+                            <button class="more-button">Ver más</button>
+                            <button class="add-cart-circle"><Icon Name="Icons.AddCart" /></button>
+                        </div>
+                    </dvi>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="center-content">
+            <p>@_emptyMessage</p>
+        </div>
+    }
 }
